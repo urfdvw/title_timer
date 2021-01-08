@@ -32,7 +32,8 @@
                     body: 'click here to start another section',
                 });
                 notification.onclick = function () {
-                    countDownDate = addMinutes(Date() + countDownDate, 0.1).getTime();
+                    countDownDate = new Date();
+                    countDownDate = addMinutes(countDownDate, 0.1).getTime();
                     setInterval(count, 500);
                 };
             }
