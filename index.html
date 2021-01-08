@@ -10,8 +10,8 @@
     <h1 id="remainder">00:00:00</h1>
     <button onclick="toggle_start()">Start/Pause</button>
     <button onclick="reset()">Reset</button> <br>
-    Sesson duration (mins): <input id="sesson" value=25> <br>
-    Break duration (mins): <input id="break" value=5> <br>
+    Sesson duration (mins): <input id="sesson" value=25 onchange="setduration()"> <br>
+    Break duration (mins): <input id="break" value=5 onchange="setduration()"> <br>
 
     <script>
         /* about notification
@@ -26,6 +26,12 @@
         var play = false;
         function toggle_start() {
             play = !play;
+        }
+
+        function setduration() {
+            if (!play) {
+                reset();
+            }
         }
 
         function reset() {
