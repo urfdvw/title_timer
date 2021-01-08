@@ -19,7 +19,7 @@
         https://icons-for-free.com/iconfiles/png/512/time+timer+icon-1320087275815015291.png
         */
 
-        var second = 1;
+        var second = 1000;
         var s_remain = 25 * 60;
         var is_sesson = true;
 
@@ -30,6 +30,7 @@
 
         function reset() {
             play = false;
+            is_sesson = true;
             s_remain = document.getElementById('sesson').value * 60;
             document.title = disp_time();
         }
