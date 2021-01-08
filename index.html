@@ -78,7 +78,12 @@
             var h_display = Math.floor(s_remain / (60 * 60));
             var m_display = Math.floor(s_remain / 60) % 60;
             var s_display = s_remain % 60;
-            var time_display = int2time(h_display) + ":" + int2time(m_display) + ":" + int2time(s_display);
+            if (h_display == 0) {
+                var time_display = int2time(m_display) + ":" + int2time(s_display);
+            }else{
+                var time_display = int2time(h_display) + ":" + int2time(m_display) + ":" + int2time(s_display);
+            }
+            
 
             document.getElementById("remainder").innerHTML = time_display;
             return time_display
