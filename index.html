@@ -10,6 +10,32 @@
     <h1 id="demo"></h1>
 
     <script>
+        // request permission on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            if (!Notification) {
+                alert('Desktop notifications not available in your browser. Try Chromium.');
+                return;
+            }
+
+            if (Notification.permission !== 'granted')
+                Notification.requestPermission();
+        });
+
+
+        function notifyMe() {
+            if (Notification.permission !== 'granted')
+                Notification.requestPermission();
+            else {
+                var notification = new Notification('Notification title', {
+                    icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
+                    body: 'Time is up',
+                });
+                notification.onclick = function () {
+                    window.open('http://stackoverflow.com/a/13328397/1269037');
+                };
+            }
+        }
+
         //https://www.w3schools.com/howto/howto_js_countdown.asp
         function addMinutes(date, minutes) {
             //https://stackoverflow.com/a/1214753/7037749
@@ -18,35 +44,37 @@
 
         // Set the date we're counting down to
         var countDownDate = new Date()
-        countDownDate = addMinutes(countDownDate, 25).getTime();
+        countDownDate = addMinutes(countDownDate, 0.1).getTime();
 
         // Update the count down every 1 second
-        var x = setInterval(function() {
+        var x = setInterval(function () {
 
-                // Get today's date and time
-                var now = new Date().getTime();
+            // Get today's date and time
+            var now = new Date().getTime();
 
-                // Find the distance between now and the count down date
-                var distance = countDownDate - now;
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
 
-                // Time calculations for days, hours, minutes and seconds
-                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                // Output the result in an element with id="demo"
-                var progress = Math.ceil(minutes / 25 * 10);
-                var info = minutes + ":" + seconds + " [" + "*".repeat(10 - progress) + "_".repeat(progress) + "]";
-                document.getElementById("demo").innerHTML = info;
-                document.title = info;
+            // Output the result in an element with id="demo"
+            var progress = Math.ceil(minutes / 25 * 10);
+            var info = minutes + ":" + seconds + " [" + "*".repeat(10 - progress) + "_".repeat(progress) + "]";
+            document.getElementById("demo").innerHTML = info;
+            document.title = info;
 
-                // If the count down is over, write some text 
-                if (distance < 0) {
-                    clearInterval(x);
-                    document.getElementById("demo").innerHTML = "EXPIRED";
-                }
-            },
+            // If the count down is over, write some text 
+            if (distance < 0) {
+                clearInterval(x);
+                notifyMe();
+                document.getElementById("demo").innerHTML = "Time's up!";
+                document.title = "Time's up!";
+            }
+        },
             500);
     </script>
 
