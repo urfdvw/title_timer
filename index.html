@@ -6,81 +6,111 @@
 </head>
 
 <body>
-
-    <h1 id="demo"></h1>
+    <h3 id="info">Session</h3>
+    <h1 id="remainder">00:00:00</h1>
+    <button onclick="toggle_start()">Start/Pause</button>
+    <button onclick="reset()">Reset</button> <br>
+    Sesson duration (mins): <input id="sesson" value=25> <br>
+    Break duration (mins): <input id="break" value=5> <br>
 
     <script>
+        /* about notification
+        http://stackoverflow.com/a/13328397/1269037
+        https://icons-for-free.com/iconfiles/png/512/time+timer+icon-1320087275815015291.png
+        */
+
+        var second = 1;
+        var s_remain = 25 * 60;
+        var is_sesson = true;
+
+        var play = false;
+        function toggle_start() {
+            play = !play;
+        }
+
+        function reset() {
+            play = false;
+            s_remain = document.getElementById('sesson').value * 60;
+            document.title = disp_time();
+        }
+
+        function int2time(n) {
+            return ("00" + n).slice(-2)
+        }
+
+        function count() {
+
+            if (play) {
+                document.title = disp_time();
+                s_remain -= 1;
+            }
+
+            if (s_remain < 0) {
+                // clearInterval(interval);
+
+                play = false;
+                if (is_sesson) {
+                    document.title = "Session Ended";
+                } else {
+                    document.title = "Break Ended";
+                }
+                is_sesson = !is_sesson;
+
+                if (is_sesson) {
+                    s_remain = document.getElementById('sesson').value * 60;
+                } else {
+                    s_remain = document.getElementById('break').value * 60;
+                }
+
+                disp_time();
+                notifyMe();
+            }
+        }
+
+        function disp_time() {
+            if (is_sesson) {
+                document.getElementById("info").innerHTML = "Session";
+            } else {
+                document.getElementById("info").innerHTML = "Break";
+            }
+
+            var h_display = Math.floor(s_remain / (60 * 60));
+            var m_display = Math.floor(s_remain / 60) % 60;
+            var s_display = s_remain % 60;
+            var time_display = int2time(h_display) + ":" + int2time(m_display) + ":" + int2time(s_display);
+
+            document.getElementById("remainder").innerHTML = time_display;
+            return time_display
+        }
+
         // request permission on page load
         document.addEventListener('DOMContentLoaded', function () {
+            if (Notification.permission !== "granted")
+                Notification.requestPermission();
+        });
+
+        function notifyMe() {
             if (!Notification) {
                 alert('Desktop notifications not available in your browser. Try Chromium.');
                 return;
             }
 
-            if (Notification.permission !== 'granted')
-                Notification.requestPermission();
-        });
-
-
-        function notifyMe() {
-            // http://stackoverflow.com/a/13328397/1269037
-            if (Notification.permission !== 'granted')
+            if (Notification.permission !== "granted")
                 Notification.requestPermission();
             else {
-                var notification = new Notification('Time is up', {
+                var notification = new Notification(document.title, {
                     icon: 'https://icons-for-free.com/iconfiles/png/512/time+timer+icon-1320087275815015291.png',
-                    body: 'click here to start another section',
+                    body: "Click here to continue",
                 });
-                notification.onclick = function () {
-                    countDownDate = new Date();
-                    countDownDate = addMinutes(countDownDate, 0.1).getTime();
-                    setInterval(count, 500);
-                };
-            }
-        }
 
-        //https://www.w3schools.com/howto/howto_js_countdown.asp
-        function addMinutes(date, minutes) {
-            //https://stackoverflow.com/a/1214753/7037749
-            return new Date(date.getTime() + minutes * 60000);
-        }
+                notification.onclick = toggle_start;
 
-        // Set the date we're counting down to
-        var countDownDate = new Date()
-        countDownDate = addMinutes(countDownDate, 0.1).getTime();
-
-        function count() {
-
-            // Get today's date and time
-            var now = new Date().getTime();
-
-            // Find the distance between now and the count down date
-            var distance = countDownDate - now;
-
-            // Time calculations for days, hours, minutes and seconds
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Output the result in an element with id="demo"
-            var progress = Math.ceil(minutes / 25 * 10);
-            var info = minutes + ":" + seconds + " [" + "*".repeat(10 - progress) + "_".repeat(progress) + "]";
-            document.getElementById("demo").innerHTML = info;
-            document.title = info;
-
-            // If the count down is over, write some text 
-            if (distance < 0) {
-                clearInterval(x);
-                notifyMe();
-                document.getElementById("demo").innerHTML = "Time's up!";
-                document.title = "Time's up!";
             }
 
         }
 
-        // Update the count down every 1 second
-        var x = setInterval(count, 500);
+        var interval = setInterval(count, second);
+        reset();
     </script>
 
 </body>
