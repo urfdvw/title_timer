@@ -23,15 +23,16 @@
 
 
         function notifyMe() {
+            // http://stackoverflow.com/a/13328397/1269037
             if (Notification.permission !== 'granted')
                 Notification.requestPermission();
             else {
-                var notification = new Notification('Notification title', {
-                    icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
-                    body: 'Time is up',
+                var notification = new Notification('Time is up', {
+                    icon: 'https://icons-for-free.com/iconfiles/png/512/time+timer+icon-1320087275815015291.png',
+                    body: 'click here to start another section',
                 });
                 notification.onclick = function () {
-                    window.open('http://stackoverflow.com/a/13328397/1269037');
+                    setInterval(count, 500);
                 };
             }
         }
@@ -46,8 +47,7 @@
         var countDownDate = new Date()
         countDownDate = addMinutes(countDownDate, 0.1).getTime();
 
-        // Update the count down every 1 second
-        var x = setInterval(function () {
+        function count() {
 
             // Get today's date and time
             var now = new Date().getTime();
@@ -74,8 +74,11 @@
                 document.getElementById("demo").innerHTML = "Time's up!";
                 document.title = "Time's up!";
             }
-        },
-            500);
+
+        }
+
+        // Update the count down every 1 second
+        var x = setInterval(count, 500);
     </script>
 
 </body>
