@@ -10,6 +10,7 @@
     <h1 id="demo"></h1>
 
     <script>
+        //https://www.w3schools.com/howto/howto_js_countdown.asp
         function addMinutes(date, minutes) {
             //https://stackoverflow.com/a/1214753/7037749
             return new Date(date.getTime() + minutes * 60000);
@@ -46,7 +47,7 @@
                     document.getElementById("demo").innerHTML = "EXPIRED";
                 }
             },
-            1000);
+            500);
     </script>
 
 </body>
