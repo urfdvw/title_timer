@@ -19,10 +19,12 @@ Minimize the window, and enjoy your work.
 
 ![](2021-01-08-17-04-12.png)
 
-Turn on browser notifications to receive end infomation.
+Turn on browser notifications to receive end information.
 
 ![](2021-01-08-17-03-20.png)
 
 # TODOs
 - Nicer look
 
+# Known issues
+- Web seems to be freezing after a session, and click on notification cannot start a break.
