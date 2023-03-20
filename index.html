@@ -2,7 +2,11 @@
 <html>
 
 <head>
-    <title>HTML Elements Reference</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Title Timer</title>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 </head>
 
 <body>
@@ -86,10 +90,10 @@
             var s_display = s_remain % 60;
             if (h_display == 0) {
                 var time_display = int2time(m_display) + ":" + int2time(s_display);
-            }else{
+            } else {
                 var time_display = int2time(h_display) + ":" + int2time(m_display) + ":" + int2time(s_display);
             }
-            
+
 
             document.getElementById("remainder").innerHTML = time_display;
             return time_display
@@ -111,7 +115,7 @@
                 Notification.requestPermission();
             else {
                 var notification = new Notification(document.title, {
-                    icon: 'https://icons-for-free.com/iconfiles/png/512/time+timer+icon-1320087275815015291.png',
+                    icon: './favicon.ico',
                     body: "Click here to continue",
                 });
 
